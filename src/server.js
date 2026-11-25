@@ -1,28 +1,55 @@
 import express from "express";
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+app.use(express.json());
 
-app.get("/user", (req, res) => {
-  res.send({
-    firstName: "Ese",
-    lastName: "David",
-    email: "ebikemeese@gmail.com",
-    createdAt: "17/06/2024",
-    updatedAt: "17/06/2024",
+let books = [
+  { id: 1, tittle: "Book 1" },
+  {
+    id: 2,
+    title: "Book 2",
+  },
+  {
+    id: 3,
+    title: "Book 3",
+  },
+];
+
+// intro route
+
+app.get("/api/books", (req, res) => {
+  res.status(200).json({
+    message: "Books fetched successfully",
+    data: books,
   });
 });
 
-app.get("/user/1", (req, res) => {
-  res.status(200).json({
-    id: 1,
-    firstName: "Ese",
-    lastName: "David",
-    email: "ebikemeese@gmail.com",
-    createdAt: "17/06/2024",
-    updatedAt: "17/06/2024",
+app.get("/api/books/:id", (req, res) => {
+  const book = books.find((item) => item.id == req.params.id);
+
+  if (book) {
+    res.status(200).json({
+      message: "Book fetched successfully",
+      data: book,
+    });
+  } else {
+    res.status(404).json({
+      message: "Book not found",
+    });
+  }
+});
+
+app.post("/api/books", (req, res) => {
+  const newBook = {
+    id: Math.floor(Math.random() * 1000),
+    title: req.body.title,
+  };
+
+  books.push(newBook);
+
+  res.status(201).json({
+    message: "Book created successfully",
+    data: newBook,
   });
 });
 
