@@ -78,3 +78,5 @@ const deleteBook = async (req, res) => {
     });
   }
 };
+
+export { getBooks, getBookById, createBook, updateBook, deleteBook };
